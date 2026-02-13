@@ -2,10 +2,34 @@
 <html>
   <head>
     <title>ミロストル技術社ウェブサイト</title>
+    <script type="text/javascript">
+        function check(){
+          const dateconst =  Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
+          const passkeys = ["でたらめ","こういう","見てはいけないものを","見てしまった","向き合って","私は","コピー機を考える","消費税","百パーセント","増税","ホラテウス","あきらめろ","ぶちこわせ","増税のことだけ考えろ","じっとしていると","やってくる","オマエ・コロスさんこんにちは","ゆばあばどうした","会議に参加しよう","羊がいる","スカイツリーが話しかけた","ねこはわたる","地面をはかいしながら","移動していった","素晴らしい","展覧会を見た","ハッピーターンは","違法薬物","ヘビは音楽","救急車","呼んだ"];
+            if (mail_form.mail.value == passkeys[dateconst]){
+                return true;
+            }else{
+                alert("合言葉が違うぜ！");
+                return false;
+            }
+        }
+    </script>
   </head>
   <body>
     <header>ミロストル技術社ウェブサイト</header>
-    <h1>ミロストル通信網アクセスページ</h1>
-    <p>すみません、まだページを作ってる途中です。</p>
+    <h1>ミロストル通信ネットワーク</h1>
+    <p>関係者以外は閲覧をおやめください</p>
+    主なページへのリンク
+    <p>さて、部外者の方はここから出ていってください。特にいかがわしい目的を持ったはね。</p>
+    <p>合言葉を入力しないと先に進めないぞ。まあ、あんたが小学生で、パソコンにあんまり詳しくなければのことだけど。ちなみにこのセキュリティーはあんまり本気で作ってない。まだ不法突破されてもいいライン。</p>
+    <form action="mcn/authbreach.html">
+      <input type="text">
+      <input type="submit" value="決定" onclick="return check()">
+    </form>
+    <address>
+      連絡先<br>
+      電子メール takikawatouma@gmail.com<br>
+      小学校 6年3組15番
+    </address>
   </body>
 </html>
