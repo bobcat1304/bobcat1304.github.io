@@ -2,67 +2,54 @@
 <html>
   <head>
     <title>ミロストル技術社ウェブサイト</title>
-    <script src="<https://unpkg.com/mqtt/dist/mqtt.min.js>"></script>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script>
-      const mqtt = require('mqtt')
-      /***
-          * ブラウザ  
-          * このドキュメントでは、ws と wss プロトコルを使用した WebSocket 経由の MQTT の使用方法を説明しています。  
-          * EMQX の ws 接続用のデフォルトポートは 8083、wss 接続用は 8084 です。
-          * 接続アドレスの後にパスを追加する必要があることに注意してください。例: /mqtt
-      */
-      const url = 'ws://mcn-central-whipchill496.cloud.shiftr.io:8083'
-      /***
-          * Node.js
-          * このドキュメントでは、mqtt と mqtts プロトコルを使用した TCP 経由の MQTT の使用方法を説明しています。
-          * EMQX の mqtt 接続のデフォルトポートは 1883、mqtts は 8883 です。
-      */  
-      // const url = 'mqtt://broker.emqx.io:1883'
-      
-      // MQTT クライアントインスタンスを作成
-      const options = {
-        // クリアセッション
-        clean: true,
-        connectTimeout: 4000,
-        // 認証
-        clientId: 'emqx_test',
-        username: 'mcn-central-whipchill496',
-        password: 'yLF6lCXtNQhPeJc1', 
-      }
-      const client  = mqtt.connect(url, options)
-      client.on('connect', function () {
-        console.log('Connected')
-        // トピックをサブスクライブ
-        client.subscribe('test', function (err) {
-          if (!err) {
-            // トピックにメッセージをパブリッシュ
-            client.publish('test', 'Hello mqtt') 
-          }
-        })
-      })
-      
-      // メッセージを受信
-      client.on('message', function (topic, message) {
-        // message は Buffer
-        console.log(message.toString())
-        client.end()  
-      })
-
-      function login(addr, pass) {
-        
-      }
     </script>
   </head>
   <body>
     <header>ミロストル技術社ウェブサイト/ミロストル通信ネットワーク</header>
     <h1>ミロストル簡易独立電子メール</h1>
     <p>関係者以外は閲覧をおやめください</p>
-    説明
-    　「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。
+    説明<br>
+    「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。
     <address>
       連絡先<br>
       電子メール takikawatouma@gmail.com<br>
       小学校 6年3組15番
     </address>
+    <script>
+      // WebSocket URL
+      const url = 'wss://mcn-central-whipchill496.cloud.shiftr.io:8084';
+  
+      // 接続オプション
+      const options = {
+        clientId: 'aiueo',
+        username: 'mcn-central-whipchill496',
+        password: 'yLF6lCXtNQhPeJc1',
+        clean: true,
+        reconnectPeriod: 1000,   // 自動再接続(1秒)
+        connectTimeout: 4000     // タイムアウト
+      };
+  
+      const client = mqtt.connect(url, options);
+  
+      client.on('connect', () => {
+        console.log('✅ 接続成功');
+  
+        client.subscribe('test/topic', (err) => {
+          if (!err) {
+            client.publish('test/topic', 'Hello from browser');
+          }
+        });
+      });
+  
+      client.on('message', (topic, message) => {
+        console.log('受信:', topic, message.toString());
+      });
+  
+      client.on('error', (err) => {
+        console.error('エラー:', err);
+      });
+    </script>
   </body>
 </html>
