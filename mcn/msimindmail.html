@@ -2,6 +2,56 @@
 <html>
   <head>
     <title>ミロストル技術社ウェブサイト</title>
+    <script src="<https://unpkg.com/mqtt/dist/mqtt.min.js>"></script>
+    <script>
+      const mqtt = require('mqtt')
+      /***
+          * ブラウザ  
+          * このドキュメントでは、ws と wss プロトコルを使用した WebSocket 経由の MQTT の使用方法を説明しています。  
+          * EMQX の ws 接続用のデフォルトポートは 8083、wss 接続用は 8084 です。
+          * 接続アドレスの後にパスを追加する必要があることに注意してください。例: /mqtt
+      */
+      const url = 'ws://mcn-central-whipchill496.cloud.shiftr.io:8083'
+      /***
+          * Node.js
+          * このドキュメントでは、mqtt と mqtts プロトコルを使用した TCP 経由の MQTT の使用方法を説明しています。
+          * EMQX の mqtt 接続のデフォルトポートは 1883、mqtts は 8883 です。
+      */  
+      // const url = 'mqtt://broker.emqx.io:1883'
+      
+      // MQTT クライアントインスタンスを作成
+      const options = {
+        // クリアセッション
+        clean: true,
+        connectTimeout: 4000,
+        // 認証
+        clientId: 'emqx_test',
+        username: 'mcn-central-whipchill496',
+        password: 'yLF6lCXtNQhPeJc1', 
+      }
+      const client  = mqtt.connect(url, options)
+      client.on('connect', function () {
+        console.log('Connected')
+        // トピックをサブスクライブ
+        client.subscribe('test', function (err) {
+          if (!err) {
+            // トピックにメッセージをパブリッシュ
+            client.publish('test', 'Hello mqtt') 
+          }
+        })
+      })
+      
+      // メッセージを受信
+      client.on('message', function (topic, message) {
+        // message は Buffer
+        console.log(message.toString())
+        client.end()  
+      })
+
+      function login(addr, pass) {
+        
+      }
+    </script>
   </head>
   <body>
     <header>ミロストル技術社ウェブサイト/ミロストル通信ネットワーク</header>
