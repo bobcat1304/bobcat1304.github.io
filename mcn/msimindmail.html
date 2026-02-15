@@ -88,8 +88,9 @@
     <p>関係者以外は閲覧をおやめください</p>
     説明<br>
     「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。<br><br><br><br><br>
-    <input type="text" id="accountname">
+    <input type="text" id="accountname"><br>
     <span style="color: red; background: yellow;"><ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に<ruby>押<rt>お</rt></ruby>してはいけない。<button id="con">接続</button>はやすぎも おそすぎも だめです！</span><br><br><br><br>
+    <input type="text" id="sendwhat"><button id="send">送信</button>
     <a href="https://bobcat1304.github.io/index.html">ホーム</a>
     <address>
       連絡先<br>
@@ -105,6 +106,19 @@
           password: "kuati-saminamu",
           clientId: acname
         });
+      });
+      document.getElementById("send").addEventListener("click", function () {
+      
+        if (!client) {
+          alert("先に接続してください");
+          return;
+        }
+      
+        const topic = acname
+        const message = document.getElementById("sendwhat").value;
+      
+        client.publish(topic, message);
+        
       });
     </script>
   </body>
