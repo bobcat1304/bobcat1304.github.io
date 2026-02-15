@@ -98,28 +98,33 @@
       小学校 6年3組15番
     </address>
     <script>
-      document.getElementById("con").addEventListener("click", function() {
-        const acname = document.getElementById("accountname").value;
-        const mqttClient = createMQTTClient({
-          brokerUrl: "wss://msimindmail.cloud.shiftr.io",
-          username: "msimindmail",
-          password: "kuati-saminamu",
-          clientId: acname
-        });
+    let mqttClient = null;   // ← 外に出す
+    let acname = "";         // ← 外に出す
+    
+    document.getElementById("con").addEventListener("click", function() {
+      acname = document.getElementById("accountname").value;
+    
+      mqttClient = createMQTTClient({
+        brokerUrl: "wss://msimindmail.cloud.shiftr.io",
+        username: "msimindmail",
+        password: "kuati-saminamu",
+        clientId: acname
       });
-      document.getElementById("send").addEventListener("click", function () {
-      
-        if (!client) {
-          alert("先に接続してください");
-          return;
-        }
-      
-        const topic = acname
-        const message = document.getElementById("sendwhat").value;
-      
-        client.publish(topic, message);
-        
-      });
+    });
+    
+    document.getElementById("send").addEventListener("click", function () {
+    
+      if (!mqttClient) {
+        alert("先に接続してください");
+        return;
+      }
+    
+      const topic = acname;
+      const message = document.getElementById("sendwhat").value;
+    
+      mqttClient.publish(topic, message);
+    });
     </script>
+
   </body>
 </html>
