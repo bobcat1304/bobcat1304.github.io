@@ -4,132 +4,142 @@
     <title>ミロストル技術社ウェブサイト</title>
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
     <script>
-    /**
-     * MQTTクライアントを作成する関数
-     * @param {Object} options
-     * @param {string} options.brokerUrl 例: "wss://broker.hivemq.com:8884/mqtt"
-     * @param {string} options.username
-     * @param {string} options.password
-     * @param {string} options.clientId
-     * @returns {Object}
-     */
-    function createMQTTClient({ brokerUrl, username, password, clientId }) {
-      const client = mqtt.connect(brokerUrl, {
-        username: username,
-        password: password,
-        clientId: clientId,
-        clean: true,
-        reconnectPeriod: 1000
-      });
-    
-      client.on("connect", () => {
-        console.log("✅ MQTT接続成功");
-      });
-    
-      client.on("error", (err) => {
-        console.error("❌ MQTTエラー:", err);
-      });
-    
-      client.on("reconnect", () => {
-        console.log("🔄 再接続中...");
-      });
-    
-      return {
-        /**
-         * トピックを購読する
-         * @param {string} topic
-         * @param {Function} callback (message, topic) => {}
-         */
-        subscribe(topic, callback) {
-          client.subscribe(topic, (err) => {
-            if (err) {
-              console.error("❌ 購読失敗:", err);
-            } else {
-              console.log("📡 購読成功:", topic);
-            }
-          });
-    
-          client.on("message", (recvTopic, message) => {
-            const log = document.getElementById("sounyuuhtml");
-            log.innerHTML += message.toString() + "<br><br>";
-          });
+      /**
+       * MQTTクライアントを作成する関数
+       * @param {Object} options
+       * @param {string} options.brokerUrl
+       * @param {string} options.username
+       * @param {string} options.password
+       * @param {string} options.clientId
+       * @returns {Object}
+       */
+      function createMQTTClient({ brokerUrl, username, password, clientId }) {
+        const client = mqtt.connect(brokerUrl, {
+          username: username,
+          password: password,
+          clientId: clientId,
+          clean: true,
+          reconnectPeriod: 1000
+        });
 
-        },
-    
-        /**
-         * メッセージを発行する
-         * @param {string} topic
-         * @param {string} message
-         */
-        publish(topic, message) {
-          client.publish(topic, message, {}, (err) => {
-            if (err) {
-              console.error("❌ 発行失敗:", err);
-            } else {
-              console.log("📤 発行成功:", topic, message);
-            }
-          });
-        },
-    
-        /**
-         * 切断
-         */
-        disconnect() {
-          client.end();
-          console.log("🔌 切断しました");
-        }
-      };
-    }
+        client.on("connect", () => {
+          console.log("✅ MQTT接続成功");
+        });
+
+        client.on("error", (err) => {
+          console.error("❌ MQTTエラー:", err);
+        });
+
+        client.on("reconnect", () => {
+          console.log("🔄 再接続中...");
+        });
+
+        return {
+          client, // 外から接続完了を監視できるように client を返す
+
+          subscribe(topic, callback) {
+            client.subscribe(topic, (err) => {
+              if (err) {
+                console.error("❌ 購読失敗:", err);
+              } else {
+                console.log("📡 購読成功:", topic);
+              }
+            });
+
+            client.on("message", (recvTopic, message) => {
+              if (recvTopic === topic) {
+                callback(message.toString(), recvTopic);
+              }
+            });
+          },
+
+          publish(topic, message) {
+            client.publish(topic, message, {}, (err) => {
+              if (err) {
+                console.error("❌ 発行失敗:", err);
+              } else {
+                console.log("📤 発行成功:", topic, message);
+              }
+            });
+          },
+
+          disconnect() {
+            client.end();
+            console.log("🔌 切断しました");
+          }
+        };
+      }
     </script>
   </head>
   <body>
-    <header>ミロストル技術社ウェブサイト/ミロストル通信ネットワーク</header>
+    <header>ミロストル技術社ウェブサイト / ミロストル通信ネットワーク</header>
     <h1>ミロストル簡易独立電子メール</h1>
     <p>関係者以外は閲覧をおやめください</p>
-    説明<br>
-    「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。<br><br><br><br><br>
+
+    アカウント名:<br>
     <input type="text" id="accountname"><br>
-    <span style="color: red; background: yellow;"><ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に<ruby>押<rt>お</rt></ruby>してはいけない。押すのは1回だけ！<button id="con">接続</button>はやすぎも おそすぎも だめです！</span><br><br><br><br>
-    <input type="text" id="towho"><input type="text" id="sendwhat"><button id="send">送信</button>
-    <div id="sounyuuhtml"></div>
+    <span style="color: red; background: yellow;">
+      <ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に押してはいけません。押すのは1回だけ！
+      <button id="con">接続</button>
+    </span>
+    <br><br>
+
+    送信先:<br>
+    <input type="text" id="towho" placeholder="宛先のトピック">
+    メッセージ:<br>
+    <input type="text" id="sendwhat" placeholder="メッセージ内容">
+    <button id="send">送信</button>
+
+    <h3>受信ログ</h3>
+    <div id="sounyuuhtml" style="border:1px solid #ccc; padding:10px; width:500px; height:200px; overflow:auto;"></div>
+
     <br><a href="https://bobcat1304.github.io/index.html">ホーム</a>
     <address>
       連絡先<br>
       電子メール takikawatouma@gmail.com<br>
       小学校 6年3組15番
     </address>
+
     <script>
-    let mqttClient = null;   // ← 外に出す
-    let acname = "";         // ← 外に出す
-    
-    document.getElementById("con").addEventListener("click", function() {
-      acname = document.getElementById("accountname").value;
-    
-      mqttClient = createMQTTClient({
-        brokerUrl: "wss://msimindmail.cloud.shiftr.io",
-        username: "msimindmail",
-        password: "kuati-saminamu",
-        clientId: acname
-      });
-      mqttClient.subscribe(acname, function(message, topic) {
-          console.log("📩 受信:", message);
+      let mqttClient = null;
+      let acname = "";
+
+      // 接続ボタン
+      document.getElementById("con").addEventListener("click", function() {
+        acname = document.getElementById("accountname").value.trim();
+        if (!acname) return alert("アカウント名を入力してください");
+
+        mqttClient = createMQTTClient({
+          brokerUrl: "wss://msimindmail.cloud.shiftr.io:443", // WebSocket + ポート指定
+          username: "msimindmail",
+          password: "kuati-saminamu",
+          clientId: acname || "client_" + Math.random().toString(16).substr(2, 8)
+        });
+
+        // 接続完了後に自分のトピックを購読
+        mqttClient.client.on("connect", () => {
+          mqttClient.subscribe(acname, function(message, topic) {
+            const log = document.getElementById("sounyuuhtml");
+            log.innerHTML += message + "<br><br>";
+            log.scrollTop = log.scrollHeight; // 自動スクロール
+          });
         });
       });
-    });
-    
-    document.getElementById("send").addEventListener("click", function () {
-    
-      if (!mqttClient) {
-        alert("先に接続してください");
-        return;
-      }
-    
-      const topic = document.getElementById("towho").value;
-      const message = document.getElementById("sendwhat").value;
-    
-      mqttClient.publish(topic, message);
-    });
-    </script>
 
+      // 送信ボタン
+      document.getElementById("send").addEventListener("click", function() {
+        if (!mqttClient) {
+          alert("先に接続してください");
+          return;
+        }
+
+        const topic = document.getElementById("towho").value.trim();
+        const message = document.getElementById("sendwhat").value.trim();
+
+        if (!topic || !message) return alert("宛先とメッセージを入力してください");
+
+        mqttClient.publish(topic, message);
+      });
+    </script>
   </body>
 </html>
