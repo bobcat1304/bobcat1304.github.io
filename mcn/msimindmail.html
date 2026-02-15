@@ -51,10 +51,9 @@
     
           client.on("message", (recvTopic, message) => {
             const log = document.getElementById("sounyuuhtml");
-            log.innerHTML += message + "<br><br>"; // 改行を反映したい場合はこちら
-            document.getElementById("sounyuuhtml").innerHTML = log;
-            }
+            log.innerHTML += message.toString() + "<br><br>";
           });
+
         },
     
         /**
