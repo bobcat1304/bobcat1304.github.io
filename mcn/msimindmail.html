@@ -87,8 +87,9 @@
     <h1>ミロストル簡易独立電子メール</h1>
     <p>関係者以外は閲覧をおやめください</p>
     説明<br>
-    「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。
-    <span style="color: red; background: yellow;">注意！必ずの時間内にスケジュールに従ってください！<button id="con">接続</button>早すぎも おそすぎも だめです！</span>
+    「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。<br><br><br><br><br>
+    <input type="text" id="accountname">
+    <span style="color: red; background: yellow;"><ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に<ruby>押<rt>お</rt></ruby>してはいけない。<button id="con">接続</button>はやすぎも おそすぎも だめです！</span><br><br><br><br>
     <a href="https://bobcat1304.github.io/index.html">
     <address>
       連絡先<br>
@@ -97,7 +98,13 @@
     </address>
     <script>
       document.getElementById("con").addEventListener("click", function() {
-        console.log("ボタンが押されました");
+        const acname = document.getElementById("accountname").value;
+        const mqttClient = createMQTTClient({
+          brokerUrl: "wss://msimindmail.cloud.shiftr.io",
+          username: "msimindmail",
+          password: "kuati-saminamu",
+          clientId: acname
+        });
       });
     </script>
   </body>
