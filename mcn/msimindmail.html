@@ -50,8 +50,9 @@
           });
     
           client.on("message", (recvTopic, message) => {
-            if (recvTopic === topic) {
-              callback(message.toString(), recvTopic);
+            const log = document.getElementById("sounyuuhtml");
+            log.innerHTML += message + "<br><br>"; // 改行を反映したい場合はこちら
+            document.getElementById("sounyuuhtml").innerHTML = log;
             }
           });
         },
@@ -89,9 +90,10 @@
     説明<br>
     「独立」っていうのは、GmailとかYahoo!メールと違って、このサービス間でしかメールを送受信できないっていうこと。<br><br><br><br><br>
     <input type="text" id="accountname"><br>
-    <span style="color: red; background: yellow;"><ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に<ruby>押<rt>お</rt></ruby>してはいけない。<button id="con">接続</button>はやすぎも おそすぎも だめです！</span><br><br><br><br>
-    <input type="text" id="sendwhat"><button id="send">送信</button>
-    <a href="https://bobcat1304.github.io/index.html">ホーム</a>
+    <span style="color: red; background: yellow;"><ruby>注意<rt>ちゅうい</rt></ruby>！<ruby>時間外<rt>じかんがい</rt></ruby>には<ruby>絶対<rt>ぜったい</rt></ruby>に<ruby>押<rt>お</rt></ruby>してはいけない。押すのは1回だけ！<button id="con">接続</button>はやすぎも おそすぎも だめです！</span><br><br><br><br>
+    <input type="text" id="towho"><input type="text" id="sendwhat"><button id="send">送信</button>
+    <div id="sounyuuhtml"></div>
+    <br><a href="https://bobcat1304.github.io/index.html">ホーム</a>
     <address>
       連絡先<br>
       電子メール takikawatouma@gmail.com<br>
@@ -110,6 +112,10 @@
         password: "kuati-saminamu",
         clientId: acname
       });
+      mqttClient.subscribe(acname, function(message, topic) {
+          console.log("📩 受信:", message);
+        });
+      });
     });
     
     document.getElementById("send").addEventListener("click", function () {
@@ -119,7 +125,7 @@
         return;
       }
     
-      const topic = acname;
+      const topic = document.getElementById("towho").value;
       const message = document.getElementById("sendwhat").value;
     
       mqttClient.publish(topic, message);
