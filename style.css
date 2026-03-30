@@ -1,6 +1,11 @@
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #111;
+    background-color: #122;
     color: #fff;
   }
+  a:link {
+    color: #090;
+  }
+  a:visited {
+    color: #5f5;
 }
