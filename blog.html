@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<title>ブログ・ミロストル</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+		<link href="https://bobcat1304.github.io/style.css" rel="stylesheet">
+	</head>
+	<body>
+		<article>
+			<header><a href="https://bobcat1304.github.io/index.html">ミロストル</a></header>
+			<h1>ブログ</h1>
+			<p>ブログ書いてくぜ</p>
+      <h2>文字入力できた</h2>
+      <p>ボタンの接触不良とかで苦戦したけど、自分の力でやってのけた！さいこう！</p>
+      <code>
+from time import sleep
+from machine import Pin, I2C
+from RW1063LCDjapanese import RW1063LCD
+import network
+import socket
 
+c1 = Pin(0, Pin.IN, Pin.PULL_DOWN)
+c2 = Pin(1, Pin.IN, Pin.PULL_DOWN)
+c3 = Pin(2, Pin.IN, Pin.PULL_DOWN)
+c4 = Pin(3, Pin.IN, Pin.PULL_DOWN)
+c5 = Pin(4, Pin.IN, Pin.PULL_DOWN)
+c6 = Pin(5, Pin.IN, Pin.PULL_DOWN)
+c7 = Pin(6, Pin.IN, Pin.PULL_DOWN)
+c8 = Pin(7, Pin.IN, Pin.PULL_DOWN)
+c9 = Pin(8, Pin.IN, Pin.PULL_DOWN)
+c0 = Pin(9, Pin.IN, Pin.PULL_DOWN)
+
+s0 = Pin(10, Pin.IN)
+
+i2c_sda = Pin(14)
+i2c_scl = Pin(15)
+i2c_lcd = I2C(1, scl=i2c_scl, sda=i2c_sda, freq=400000)
+lcd = RW1063LCD(i2c_lcd, addr=0x3F)
+lcd.init_lcd()
+
+# ASCIIの印刷可能文字
+ascii_chars = [chr(i) for i in range(0x21, 0x7F)]
+
+# 半角カタカナ対応表（全角）
+halfwidth_kana = [
+    '。','「','」','、','・','ヲ','ァ','ィ','ゥ','ェ','ォ','ャ','ュ','ョ','ッ',
+    'ー','ア','イ','ウ','エ','オ','カ','キ','ク','ケ','コ','サ','シ','ス','セ','ソ',
+    'タ','チ','ツ','テ','ト','ナ','ニ','ヌ','ネ','ノ','ハ','ヒ','フ','ヘ','ホ',
+    'マ','ミ','ム','メ','モ','ヤ','ユ','ヨ','ラ','リ','ル','レ','ロ','ワ','ン','゛','゜'
+]
+
+funcspclist = [
+    'EN', 'BS', ' '
+]
+
+# これをまとめてリスト化
+charlist = ascii_chars + halfwidth_kana + funcspclist
+
+print(charlist)
+
+def singlebtn(btnno):
+    btns = [c0, c1, c2, c3, c4, c5, c6, c7, c8, c9]
+    obj = btns[btnno]
+    rtrn = obj.value()
+    return rtrn
+
+def readbtns():
+    for i in range(10):
+        pu = singlebtn(i)
+        if pu == 0:
+            return i
+    return None
+
+def waitbtn():
+    while True:
+        rb = readbtns()
+        if rb is not None:
+            return rb
+
+def charin(takeit):
+    lcd.clear()
+    while True:
+        print(c1.value(), c2.value(), c3.value(), c4.value(), c5.value(), c6.value(), c7.value(), c8.value(), c9.value(), c0.value())
+        sleep(0.3)
+        btnin1 = waitbtn()
+        sleep(0.3)
+        btnin2 = waitbtn()
+        sleep(0.3)
+        btnin3 = waitbtn()
+        btnin1 = str(btnin1)
+        btnin2 = str(btnin2)
+        btnin3 = str(btnin3)
+        btnina = btnin1 + btnin2 + btnin3
+        btnina = int(btnina)
+        btnina = btnina % 159
+        print(btnina)
+        rtrn = charlist[btnina]
+        print(rtrn)
+        if rtrn == "EN":
+            return takeit
+        if rtrn == "BS" and len(takeit) is not 0:
+            takeit = takeit[:-1]
+        else:
+            takeit = takeit + rtrn
+        lcd.move_to(0, 0)
+        lcd.clear()
+        lcd.putstr(takeit)
+
+
+a = ""
+charin(a)
+      </code>
+      <p>ラズパイpico2w使った。回路図つくんのめんどい。後で描く（フラグかもしれないですますござる）</p>
+			<footer>
+				<nav>
+					<ul>
+						<li><a href="https://bobcat1304.github.io/index.html">ホーム</a></li>
+						<li><a href="https://bobcat1304.github.io/links.html">主要なページへのリンク</a></li>
+						<li><a href="https://bobcat1304.github.io/about.html">このウェブサイトについて</a></li>
+					</ul>
+				</nav>
+				<address>
+					電子メールアドレス<a href="mailto:takikawatouma@gmail.com">takikawatouma@gmail.com</a>
+				</address>
+			</footer>
+		</article>
+	</body>
+</html>
