@@ -10,6 +10,6 @@ fetch("posts.txt")
         for (let line of linelist) {
             let plslist = line.split("|");
             let date = plslist[0]
-            document.getElementById("post-list").innerHTML = '<a href="posts/' + date + '.html">' + plslist[0] + "|" + plslist[1] + </a>;
+            document.getElementById("post-list").innerHTML = '<a href="posts/' + date + '.html">' + plslist[1] + '</a>';
         }
     });
