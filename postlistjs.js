@@ -1,5 +1,5 @@
 const postList = document.getElementById("post-list");
-
+postList.innerHTML += "<ul>"
 fetch("posts.txt")
     .then(response => response.text())
     .then(text => {
@@ -8,6 +8,7 @@ fetch("posts.txt")
         for (let line of linelist) {
             let plslist = line.split("|");
             let date = plslist[0]
-            postList.innerHTML += '<a href="posts/' + date + '.html">' + plslist[0] + "|" + plslist[1] + "</a>";
+            postList.innerHTML += '<li><a href="posts/' + date + '.html">' + plslist[0] + "|" + plslist[1] + "</a></li><br>";
         }
+        postList.innerHTML += "</ul>"
     })
