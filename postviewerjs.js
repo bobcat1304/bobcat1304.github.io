@@ -18,9 +18,9 @@ fetch("posts.txt")
     .then(text => {
         let herewhere = text.indexOf(datehpn)
         let pprevwhere = text.lastIndexOf("\n", herewhere)
-        let prevwhere = text.lastIndexOf("\n", pprevwhere)
+        let prevwhere = text.lastIndexOf("\n", pprevwhere - 1)
         let pnextwhere = text.indexOf("\n", herewhere)
-        let nextwhere = text.indexOf("\n", pnextwhere)
+        let nextwhere = text.indexOf("\n", pnextwhere + 1)
         //・・番目の文字って言おうのが返り値。prevwhere番目からnextwhere番目の文字列をpnbuttonに出したらいい。リンク付もしないと。
         let prevlineouttext = text.substring(prevwhere, pprevwhere)
         console.log(prevlineouttext, prevwhere, pprevwhere)
