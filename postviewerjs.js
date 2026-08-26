@@ -17,10 +17,10 @@ fetch("posts.txt")
     .then(response => response.text())
     .then(text => {
         let herewhere = text.indexOf(datehpn)
-        let pprevwhere = text.lastIndexOf("\n", herewhere)
-        let prevwhere = text.lastIndexOf("\n", pprevwhere - 1)
-        let pnextwhere = text.indexOf("\n", herewhere)
-        let nextwhere = text.indexOf("\n", pnextwhere + 1)
+        let pnextwhere = text.lastIndexOf("\n", herewhere)
+        let nextwhere = text.lastIndexOf("\n", pnextwhere - 1)
+        let pprevwhere = text.indexOf("\n", herewhere)
+        let prevwhere = text.indexOf("\n", pprevwhere + 1)
         //・・番目の文字って言おうのが返り値。prevwhere番目からnextwhere番目の文字列をpnbuttonに出したらいい。リンク付もしないと。
         let prevlineouttext = text.substring(prevwhere, pprevwhere)
         console.log(prevlineouttext, prevwhere, pprevwhere)
@@ -29,5 +29,5 @@ fetch("posts.txt")
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
         pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '">Previous post' + prevlineouttext + "</a>"
-        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">Next post' + nextlineouttext + "</a>"
+        pnbutton.innerHTML += "<a style="text-align: right" href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">Next post' + nextlineouttext + "</a>"
     })
