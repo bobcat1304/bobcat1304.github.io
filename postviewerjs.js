@@ -23,11 +23,11 @@ fetch("posts.txt")
         let nextwhere = text.indexOf("\n", pnextwhere)
         //・・番目の文字って言おうのが返り値。prevwhere番目からnextwhere番目の文字列をpnbuttonに出したらいい。リンク付もしないと。
         let prevlineouttext = text.substring(prevwhere, pprevwhere)
-        console.log(prevlineouttext)
+        console.log(prevlineouttext, prevwhere, pprevwhere)
         let nextlineouttext = text.substring(nextwhere, pnextwhere)
-        console.log(nextlineouttext)
+        console.log(nextlineouttext, nextwhere, pnextwhere)
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
-        pnbutton.innerHTML += "Previous post <a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '"' + prevlineouttext + "</a>"
-        pnbutton.innerHTML += "Next post <a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '"' + nextlineouttext + "</a>"
+        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '">Previous post' + prevlineouttext + "</a>"
+        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">Next post' + nextlineouttext + "</a>"
     })
