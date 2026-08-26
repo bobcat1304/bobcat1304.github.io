@@ -28,6 +28,6 @@ fetch("posts.txt")
         console.log(nextlineouttext, nextwhere, pnextwhere)
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
-        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '">&lt;-----&lt;-----&lt;-----&lt; 前の記事 ' + prevlineouttext + "</a>"
-        pnbutton.innerHTML += "<div style=\"text-align: right\"><a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">次の記事 ' + nextlineouttext + " &gt;-----&gt;-----&gt;-----&gt;</a></div>"
+        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '">&lt;-----&lt;-----&lt;-----&lt; 前の記事 ' + prevlineouttext + "</a><br>"
+        pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">次の記事 ' + nextlineouttext + " &gt;-----&gt;-----&gt;-----&gt;</a>"
     })
