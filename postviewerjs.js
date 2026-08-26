@@ -16,7 +16,7 @@ fetch("blog/" + datehpn + ".html")
 fetch("posts.txt")
     .then(response => response.text())
     .then(text => {
-        let herewhere = text.indexOf(date)
+        let herewhere = text.indexOf(datehpn)
         let pprevwhere = text.lastIndexOf("\n", herewhere)
         let prevwhere = text.lastIndexOf("\n", pprevwhere)
         let pnextwhere = text.IndexOf("\n", herewhere)
