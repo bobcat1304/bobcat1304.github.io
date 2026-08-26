@@ -28,6 +28,6 @@ fetch("posts.txt")
         console.log(nextlineouttext)
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
-        pnbutton.innerHTML += "Previous post <a href=\"postviewer.html?date=" + prevlineoutsplit[0] '"' + prevlineouttext + "</a>"
-        pnbutton.innerHTML += "Next post <a href=\"postviewer.html?date=" + nextlineoutsplit[0] "\">" + nextlineouttext + "</a>"
+        pnbutton.innerHTML += "Previous post <a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '"' + prevlineouttext + "</a>"
+        pnbutton.innerHTML += "Next post <a href=\"postviewer.html?date=" + nextlineoutsplit[0] + '"' + nextlineouttext + "</a>"
     })
