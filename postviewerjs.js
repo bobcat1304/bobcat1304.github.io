@@ -5,7 +5,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const datehpn = urlParams.get('date');
 
-fetch("blog/" + datehpn + ".html")
+fetch("blog/" + datehpn ".html")
     .then(response => response.text())
     .then(text => {
         console.log(text);
@@ -28,6 +28,6 @@ fetch("posts.txt")
         console.log(nextlineouttext)
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
-        pnbutton.innerHTML += "Previous post <a href=\"postviewer.html?date=" + prevlineoutsplit[0] "\">" + prevlineouttext + "</a>"
+        pnbutton.innerHTML += "Previous post <a href=\"postviewer.html?date=" + prevlineoutsplit[0] '"' + prevlineouttext + "</a>"
         pnbutton.innerHTML += "Next post <a href=\"postviewer.html?date=" + nextlineoutsplit[0] "\">" + nextlineouttext + "</a>"
     })
