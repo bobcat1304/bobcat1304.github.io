@@ -8,7 +8,7 @@ fetch("posts.txt")
         for (let line of linelist) {
             let plslist = line.split("|");
             let date = plslist[0]
-            postList.innerHTML += '<li><a href="posts/' + date + '.html">' + plslist[0] + "|" + plslist[1] + "</a></li><br>";
+            postList.innerHTML += '<li><a href="postviewer?date=' + date + '">' + plslist[0] + "|" + plslist[1] + "</a></li><br>";
         }
         postList.innerHTML += "</ul>"
     })
