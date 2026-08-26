@@ -29,5 +29,5 @@ fetch("posts.txt")
         let prevlineoutsplit = prevlineouttext.split("|");
         let nextlineoutsplit = nextlineouttext.split("|");
         pnbutton.innerHTML += "<a href=\"postviewer.html?date=" + prevlineoutsplit[0] + '">Previous post' + prevlineouttext + "</a>"
-        pnbutton.innerHTML += "<a style="text-align: right" href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">Next post' + nextlineouttext + "</a>"
+        pnbutton.innerHTML += "<a style=\"text-align: right\" href=\"postviewer.html?date=" + nextlineoutsplit[0] + '">Next post' + nextlineouttext + "</a>"
     })
