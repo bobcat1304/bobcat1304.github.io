@@ -5,7 +5,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const datehpn = urlParams.get('date');
 
-fetch("blog/" + datehpn ".html")
+fetch("blog/" + datehpn + ".html")
     .then(response => response.text())
     .then(text => {
         console.log(text);
