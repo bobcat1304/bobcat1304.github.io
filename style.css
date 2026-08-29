@@ -14,7 +14,10 @@
 }
 
 @font-face {
-  font-family: KHドットフォントシリーズ;
-  src: local("小伝馬町16")
-       url(KH-Dot-Akihabara-16.ttf);
+  font-family: "KHDot";
+  src: url("KH-Dot-Akihabara-16.ttf") format("truetype");
+}
+
+body {
+  font-family: "KHDot";
 }
