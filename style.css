@@ -13,7 +13,8 @@
   }
 }
 
-body {
-    font-family: "ＭＳ ゴシック", "MS Gothic", monospace;
-    font-size: 16px;
+@font-face {
+  font-family: KHドットフォントシリーズ;
+  src: local("小伝馬町16")
+       url(KH-Dot-Akihabara-16.ttf);
 }
