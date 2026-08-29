@@ -12,3 +12,8 @@
     color: #b388ff;
   }
 }
+
+body {
+    font-family: "ＭＳ ゴシック", "MS Gothic", monospace;
+    font-size: 16px;
+}
