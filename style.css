@@ -13,11 +13,11 @@
   }
 }
 
-@font-face {
+@@font-face {
   font-family: "KHDot";
-  src: url("KH-Dot-Akihabara-16.ttf") format("truetype");
+  src: url("./KH-Dot-Akihabara-16.ttf") format("truetype");
 }
 
 body {
-  font-family: "KHDot";
+  font-family: "KHDot", sans-serif;
 }
