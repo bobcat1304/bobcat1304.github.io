@@ -1,68 +1,76 @@
-<h1>ACM2004D-FLW-FBW-IICをMicroPythonで動かすには</h1>
-<p>ACM2004D-FLW-FBW-IICをMicropythonで動かすためのモジュールをつくりました。えぐち　かずほさんの作ったものを基にして、これを改造して、片仮名も表示できるようにしました。えぐちさんに許可を取れてはいませんが、まあ、いいですよね。</p>
-<a href="ACM2004D-FLW-FBW-IIC https://kazuho-e-blog.tokyo/?p=3108">えぐちさんがつくったもの</a>
-<h2>モジュールのgithub</h2>
-<a href="https://github.com/bobcat1304/ACM2004D-FLW-FBW-IIC/tree/main">こちら</a>
-<h2>使い方(使用例)</h2>
-<h3>回路図</h3>
-<img src="https://raw.githubusercontent.com/bobcat1304/bobcat1304.github.io/refs/heads/main/blog/imgs/upscaled-8x.png">
-<h3>ACM2004D-FLW-FBW-IICの端子の並び</h3>
-画面を上に向けて、７つの端子が奥の方にくるようにして左から
-<ol>
-    <li>Vss、電源マイナス</li>
-    <li>Vdd、電源プラス(5V)</li>
-    <li>V0、よくわかんない</li>
-    <li>SDA、データ線</li>
-    <li>SCL、クロック線</li>
-    <li>BL+、バックライト プラス5V</li>
-    <li>BL-、バックライト マイナス</li>
-</ol>
-<h2>ラズパイpicoのなかみ</h2>
-main.py
-<pre><code>from machine import I2C,Pin
-import machine
-from ACM2004DLCD import RW1063LCD
-import time
-
-#LCD i2C Setting
-sda = machine.Pin(2)
-scl = machine.Pin(3)
-i2c_lcd = I2C(1,scl=scl,sda=sda,freq=400000)
-lcd = RW1063LCD(i2c_lcd, addr=0x3F)
-#lcd = I2cLcd(i2c_lcd, 0x3f, 4, 20)
-lcd.clear()
-
-while True:
-    lcd.move_to(0,0)
-    lcd.putstr("ミロストル ケッシャ")
-    lcd.move_to(0,1)
-    lcd.putstr("アイウエオカキクケコサシスセソタチツテト")
-    lcd.move_to(0,2)
-    lcd.putstr("The Milostol Society")
-    lcd.move_to(0,3)
-    lcd.putstr("ABCDEFGHIJklmnopqrst")
-    time.sleep(2)
+<head>
+    <title>テスト投稿・ブログ・ミロストル結社</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+    <link href="https://bobcat1304.github.io/style.css" rel="stylesheet">
+</head>
+<body>
+    <h1>ACM2004D-FLW-FBW-IICをMicroPythonで動かすには</h1>
+    <p>ACM2004D-FLW-FBW-IICをMicropythonで動かすためのモジュールをつくりました。えぐち　かずほさんの作ったものを基にして、これを改造して、片仮名も表示できるようにしました。えぐちさんに許可を取れてはいませんが、まあ、いいですよね。</p>
+    <a href="ACM2004D-FLW-FBW-IIC https://kazuho-e-blog.tokyo/?p=3108">えぐちさんがつくったもの</a>
+    <h2>モジュールのgithub</h2>
+    <a href="https://github.com/bobcat1304/ACM2004D-FLW-FBW-IIC/tree/main">こちら</a>
+    <h2>使い方(使用例)</h2>
+    <h3>回路図</h3>
+    <img src="https://raw.githubusercontent.com/bobcat1304/bobcat1304.github.io/refs/heads/main/blog/imgs/upscaled-8x.png">
+    <h3>ACM2004D-FLW-FBW-IICの端子の並び</h3>
+    画面を上に向けて、７つの端子が奥の方にくるようにして左から
+    <ol>
+        <li>Vss、電源マイナス</li>
+        <li>Vdd、電源プラス(5V)</li>
+        <li>V0、よくわかんない</li>
+        <li>SDA、データ線</li>
+        <li>SCL、クロック線</li>
+        <li>BL+、バックライト プラス5V</li>
+        <li>BL-、バックライト マイナス</li>
+    </ol>
+    <h2>ラズパイpicoのなかみ</h2>
+    main.py
+    <pre><code>from machine import I2C,Pin
+    import machine
+    from ACM2004DLCD import RW1063LCD
+    import time
+    
+    #LCD i2C Setting
+    sda = machine.Pin(2)
+    scl = machine.Pin(3)
+    i2c_lcd = I2C(1,scl=scl,sda=sda,freq=400000)
+    lcd = RW1063LCD(i2c_lcd, addr=0x3F)
+    #lcd = I2cLcd(i2c_lcd, 0x3f, 4, 20)
     lcd.clear()
-    time.sleep(0.5)
-
-</code></pre>
-ACM2004DLCD.py
-(上記のgithub参照)
-<h2>このプログラムでどうなるか。</h2>
-<pre>ミロストル ケッシャ
-アイウエオカキクケコサシスセソタチツテト
-The Milostol Society
-ABCDEFGHIJklmnopqrst</pre>
-が点滅する
-<h2>解説</h2>
-<h3>lcd.move_to()について</h3>
-<p>カーソルを動かす関数。第一引数は列、第二は行を指定する。0,0で、1行目1列目という意味。</p>
-<h3>putstr()</h3>
-<p>文字列を表示させる。行に文字列が収まらないと、変に改行されてしまう。使える文字はACM2004DLCD.pyの中にでっかい辞書の変数があるからそれ参照。</p>
-<h3>clear()</h3>
-<p>表示している文字をクリア</p>
-<h3>その他リンク</h3>
-<a href="https://akizukidenshi.com/catalog/g/g117381/">秋月電子でacm2004d-flw-fbw-iicをかう</a>
-<a href="https://akizukidenshi.com/goodsaffix/ACM2004D-FLW-FBW-IIC.pdf">データシート</a>
-<h3>最後</h3>
-<p>僕の初めてのちゃんとした記事でした。読んでくれてありがとうございます。このキャラクターディスプレイをmicropythonで使うなら役立ててくれると嬉しいです。モジュールに問題点があればメールで教えてください</p>
+    
+    while True:
+        lcd.move_to(0,0)
+        lcd.putstr("ミロストル ケッシャ")
+        lcd.move_to(0,1)
+        lcd.putstr("アイウエオカキクケコサシスセソタチツテト")
+        lcd.move_to(0,2)
+        lcd.putstr("The Milostol Society")
+        lcd.move_to(0,3)
+        lcd.putstr("ABCDEFGHIJklmnopqrst")
+        time.sleep(2)
+        lcd.clear()
+        time.sleep(0.5)
+    
+    </code></pre>
+    ACM2004DLCD.py
+    (上記のgithub参照)
+    <h2>このプログラムでどうなるか。</h2>
+    <pre>ミロストル ケッシャ
+    アイウエオカキクケコサシスセソタチツテト
+    The Milostol Society
+    ABCDEFGHIJklmnopqrst</pre>
+    が点滅する
+    <h2>解説</h2>
+    <h3>lcd.move_to()について</h3>
+    <p>カーソルを動かす関数。第一引数は列、第二は行を指定する。0,0で、1行目1列目という意味。</p>
+    <h3>putstr()</h3>
+    <p>文字列を表示させる。行に文字列が収まらないと、変に改行されてしまう。使える文字はACM2004DLCD.pyの中にでっかい辞書の変数があるからそれ参照。</p>
+    <h3>clear()</h3>
+    <p>表示している文字をクリア</p>
+    <h3>その他リンク</h3>
+    <a href="https://akizukidenshi.com/catalog/g/g117381/">秋月電子でacm2004d-flw-fbw-iicをかう</a>
+    <a href="https://akizukidenshi.com/goodsaffix/ACM2004D-FLW-FBW-IIC.pdf">データシート</a>
+    <h3>最後</h3>
+    <p>僕の初めてのちゃんとした記事でした。読んでくれてありがとうございます。このキャラクターディスプレイをmicropythonで使うなら役立ててくれると嬉しいです。モジュールに問題点があればメールで教えてください</p>
+    <a href="https://bobcat1304.github.io/postlist.html">ブログの記事一覧</a>
+</body>
